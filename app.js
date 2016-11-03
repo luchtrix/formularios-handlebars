@@ -33,6 +33,14 @@ app.get('/', function(req, res){
   res.render('index')
 });
 
+app.post('/ciudadano-alerta', function(req, res){
+  res.render('alert')
+});
+
+app.get('/alert', function(req, res){
+  res.render('alert')
+});
+
 /* BLOQUE CUATRO DE INICIALIZCION */
 server.listen(app.get("port"),function() {
 	console.log("Servidor de "+app.get("miAplicacion")+" inicializado en el puerto "+app.get("port"));
