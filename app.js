@@ -8,7 +8,10 @@ var handlebars = require('express-handlebars');
 //usando middleware (body parser) para recibir datos del formulario
 var bodyParser = require('body-parser');
 //Persistencia de datos
-var mongoDb = [];
+//var mongoDb = [];
+var mongoose = require('mongoose');
+mongoose.connect('localhost:27017/traffcityII');
+var Alerta = require('./models/modeloAlerta');
 
 /* BLOQUE DOS DE CONFIGURACION DE EXPRESS*/
 //configuracion del Nombre de la APlicacion
@@ -17,6 +20,9 @@ app.set("miAplicacion","TRAFFCITY");
 app.set("port", process.env.PORT || 3000);
 //configuracion de vistas
 app.set('views', path.join(__dirname, 'views'));
+//para poder utilizar los css
+app.use(express.static(path.join(__dirname, 'public')));
+
 // me he equivocado en la configuracion, recuerda que para configurar un motor se usa app.engine
 app.engine('handlebars', handlebars({
 	"defaultLayout": "main"
@@ -33,8 +39,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 /* BLOQUE TRES DE RUTAS DEL PROYECTO */
 app.get('/', function(req, res){
-  //este es el error, el que renderiza no es la app es la respuesta
-  res.render('index', { alertas: mongoDb });
+  //var alerta = new Alerta();
+  Alerta.find({}, function(err, alertas ){
+    res.render('index', { alertas: alertas });
+  });
+  //res.render('index', { alertas: mongoDb });
   //res.render('index');
 });
 
@@ -42,9 +51,11 @@ app.post('/ciudadano-alerta', function(req, res){
   //res.render('alert')
   //console.log(req.body.question);
   //res.end();
-  mongoDb.push(req.body.question);
+  //mongoDb.push(req.body.question);
+  req.body.fechaQuestion = new Date();
+  var alerta = new Alerta(req.body)
+  alerta.save();
   res.redirect('/');
-  
 });
 
 app.get('/alert', function(req, res){

@@ -3,14 +3,27 @@
 	<title>Home</title>
 </head>
 <body>
-	<h1>- Index -</h1>
-	<br>
-	<a href="/alert">Ir a alertas</a>
 	<br><br><br>
 	<!-- Imprimiendo mongoDb -->
-	{{#each alertas}}
-		- {{this}}
-		<br>
-	{{/each}}
+	<div class="container">
+		<h2>Mis Alertas</h2>
+  		<p>A continuación se presentan las alertas de los ciudadanos:</p>
+  		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th class="text-center">Alerta</th>
+					<th class="text-center">Fecha</th>
+      			</tr>
+   			</thead>
+   			<tbody>
+   				{{#each alertas}}
+				<tr>
+					<td class="text-center">{{this.question}}</td>
+        			<td class="text-center">{{this.fechaQuestion}}</td>
+        		</tr>
+        		{{/each}}
+    		</tbody>
+  		</table>
+	</div>
 </body>
 </html>
